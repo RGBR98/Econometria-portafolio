@@ -182,9 +182,13 @@ anova(modelo_1)
 ### Comprobación de la linealidad de la Fn de regresión
 
 Comprobamos con la R^2, en este caso los errores se acercan un 77% a nuestra recta de regresión
+<<<<<<< Updated upstream
 lo que nos dice que sí hay linealidad en ella, lo comprobamos sacando la R^2
 
 nos da el .7787968 de R^2
+=======
+lo que nos dice que sí hay linealidad en ella, lo comprobamos sacando la R^2 nos da el .7787968 de R^2. Esto quiere decir que la variable X explica en un 77.88% a la variable dependiente Y.
+>>>>>>> Stashed changes
 
 ### Heterocedasticidad 
 
