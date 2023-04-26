@@ -135,6 +135,19 @@ print(hp_eng.size)
 
 ## Parámetros del modelo 
 
+<<<<<<< Updated upstream
+=======
+En un modelo de regresión, los parámetros son los valores que se ajustan al conjunto de datos para crear la mejor línea o curva que represente la relación entre la variable independiente y la variable dependiente.
+
+En una regresión lineal simple, los parámetros son la pendiente y la intersección en el eje. La pendiente representa el cambio en la variable dependiente por cada cambio unitario en la variable independiente, mientras que la intersección en el eje y representa el valor de la variable dependiente cuando la variable independiente es igual a cero.
+
+El objetivo de un modelo de regresión es encontrar los valores óptimos de los parámetros que minimicen la diferencia entre las predicciones del modelo y los valores reales de la variable dependiente en el conjunto de datos.
+
+Vamos a utilizar la variable X = enginesize ya que lógicamente se puede entender que haya una relación positiva respecto al tamaño del motor y el precio. Aunado a esto pudimos observar que tienen una correlación de .874, la más alta de los intervalos analizados
+
+
+
+>>>>>>> Stashed changes
 ```{r MRLS, comment = ""}
 
 train.base <- raw_df %>% 
