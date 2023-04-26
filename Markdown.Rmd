@@ -151,6 +151,8 @@ summary(modelo_1)
 ```
 Podemos observar que para B0 y B1 el P value < |t value | por lo tanto B0 y B1 son significativas con un nivel de confianza de 1
 
+aqui escribo 
+
 
 Tabla ANOVA 
 
