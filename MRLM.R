@@ -268,6 +268,8 @@ train.base.confianza.prediccion_m <- as.data.frame(c(train.base_m, confianza_m, 
 
 # Graficamos - Preguntar a profesor esta parte ya que no me sale el gráfico con todas las variables en un mismo lugar
 
+test <- c(train.base_m$carwidth*modelo.8$coefficients)
+
 grafico_confianza_prediccion_m <- train.base.confianza.prediccion_m %>% 
   ggplot() + 
   geom_point(aes(x = carwidth, y = price)) +
@@ -276,12 +278,7 @@ grafico_confianza_prediccion_m <- train.base.confianza.prediccion_m %>%
   geom_point(aes(x = compressionratio, y = price)) + 
   geom_point(aes(x = log(peakrpm), y = price)) + 
   
-  geom_line(aes(x = carwidth, y = lwr), color = "red", linetype = "dashed") + 
-  geom_line(aes(x = carwidth, y = upr), color = "red", linetype = "dashed") +
-  geom_line(aes(x = enginesize, y = lwr), color = "blue", linetype = "dashed") + 
-  geom_line(aes(x = enginesize, y = upr), color = "blue", linetype = "dashed") +
-  geom_line(aes(x = stroke, y = lwr), color = "purple", linetype = "dashed") + 
-  geom_line(aes(x = stroke, y = upr), color = "purple", linetype = "dashed") 
+ 
   
 
 
