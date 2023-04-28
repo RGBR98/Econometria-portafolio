@@ -115,14 +115,14 @@ summary(modelo.7)
 # Eliminamos carbody porque tiene 0.087241
 
 modelo.8 <- lm(price~ . -citympg -curbweight -carlength -horsepower -boreratio -highwaympg -carheight -wheelbase
-               -carbody, data = train.base_m)
+               -carbody , data = train.base_m)
 
 summary(modelo.8)
 
 # Ya todos los pvalues que quedan son menores a .05
 # Checamos un VIF final para confirmar que ya no hay correlación en nuestras variables independientes
 
-vif(modelo.8)
+as.data.frame(vif(modelo.8))
 
 # Todos son menores a 10 y están dentro de nuestro pvalue para rechazar H0, estas son las variables que vamos a usar
 # lo siguiente que vamos a hacer es checar que se cumplan los supuestos de los residuales
@@ -265,21 +265,3 @@ colnames(prediccion_m) <- c("Y_Observada_predecida", "lwr_pred", "upr_pred")
 # Unimos ambos
 
 train.base.confianza.prediccion_m <- as.data.frame(c(train.base_m, confianza_m, prediccion_m))
-
-# Graficamos - Preguntar a profesor esta parte ya que no me sale el gráfico con todas las variables en un mismo lugar
-
-test <- c(train.base_m$carwidth*modelo.8$coefficients)
-
-grafico_confianza_prediccion_m <- train.base.confianza.prediccion_m %>% 
-  ggplot() + 
-  geom_point(aes(x = carwidth, y = price)) +
-  geom_point(aes(x = enginesize, y = price)) + 
-  geom_point(aes(x = stroke, y = price)) + 
-  geom_point(aes(x = compressionratio, y = price)) + 
-  geom_point(aes(x = log(peakrpm), y = price)) + 
-  
- 
-  
-
-
-grafico_confianza_prediccion_m
