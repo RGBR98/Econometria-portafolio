@@ -135,6 +135,14 @@ print(hp_eng.size)
 
 ## Parámetros del modelo 
 
+En un modelo de regresión, los parámetros son los valores que se ajustan al conjunto de datos para crear la mejor línea o curva que represente la relación entre la variable independiente y la variable dependiente.
+
+En una regresión lineal simple, los parámetros son la pendiente y la intersección en el eje. La pendiente representa el cambio en la variable dependiente por cada cambio unitario en la variable independiente, mientras que la intersección en el eje y representa el valor de la variable dependiente cuando la variable independiente es igual a cero.
+
+El objetivo de un modelo de regresión es encontrar los valores óptimos de los parámetros que minimicen la diferencia entre las predicciones del modelo y los valores reales de la variable dependiente en el conjunto de datos.
+
+
+
 ```{r MRLS, comment = ""}
 
 train.base <- raw_df %>% 
@@ -149,6 +157,8 @@ modelo_1 <- lm(price~enginesize, data = train.base)
 summary(modelo_1)
 
 ```
+Los valores de los parámetros son B0= -8156.662 y B1= 167.62 con unos errores estándar de 1022.821 y 7.497 respectivamente.
+
 Podemos observar que para B0 y B1 el P value < |t value | por lo tanto B0 y B1 son significativas con un nivel de confianza de 1
 
 
@@ -169,7 +179,7 @@ anova(modelo_1)
 Comprobamos con la R^2, en este caso los errores se acercan un 77% a nuestra recta de regresión
 lo que nos dice que sí hay linealidad en ella, lo comprobamos sacando la R^2
 
-nos da el .7787968 de R^2
+nos da el .7787968 de R^2. Esto quiere decir que la variable X explica en un 77.88% a la variable dependiente Y.
 
 ### Heterocedasticidad 
 
