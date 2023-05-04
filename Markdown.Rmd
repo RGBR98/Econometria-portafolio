@@ -323,3 +323,238 @@ grafico_confianza_prediccion
 
 ```
 
+\pagebreak
+\newpage
+
+# Modelo de regresión lineal Múltiple 
+
+## Selección de los regresores 
+
+Utilizamos las variables numéricas nuevamente para poder tener un mejor control sobre las variables y utilizamos el método "Backward", este método es computacional pero debido a que hay una cantidad manejable de variables lo hicimos a mano, tomando en cuanta un nivel de significancia de .005 
+
+Iniciamos con el modelo tomando en cuenta todas las variables del modelo
+
+```{r MRLM Selección, comment = ""}
+
+
+library(caTools)
+library(car)
+
+
+numeric_df <- raw_df %>% 
+  dplyr::select(wheelbase, carlength, carwidth, carheight, curbweight, enginesize, boreratio, stroke, compressionratio,
+                horsepower, peakrpm, citympg, highwaympg,carbody, price)
+
+train.base_m <- numeric_df %>% 
+  sample_frac(.70)
+
+val.base_m <- numeric_df %>% 
+  setdiff(train.base_m)
+
+modelo_todo <- lm(price~ ., data = train.base_m)
+
+summary(modelo_todo)
+
+```
+
+\pagebreak
+
+Ya con esos datos podemos observar que los Pvalues son mayores a 0.005 en algunos regresores, por lo que vamos a ir quitando variables que no cumplen con la prueba Global de la regresión y corriendo la regresión nuevamente por cada modelo.
+
+También utilizamos el Variance Inflation Factor (VIF) el cual nos da las correlaciones entre los regresores, y estamos buscando un VIF menor a 10 en todas las variables de nuestro modelo 
+
+
+
+En el reporte sólo vamos a poner el modelo sin las variables con Pvalue mayor a 0.005
+
+```{r MRLM lm a usar, comment = "" }
+
+modelo.8 <- lm(price~ . -citympg -curbweight -carlength -horsepower -boreratio -highwaympg -carheight -wheelbase
+               -carbody, data = train.base_m)
+
+summary(modelo.8)
+
+
+```
+
+Como se puede observar, las variables ya tienen un VIF menos a 10 
+
+```{r VIF, comment = "" }
+
+print(as.data.frame(vif(modelo.8)))
+
+```
+
+\pagebreak
+\newpage
+
+## Análisis de residuales 
+
+### Comprobación de la linealidad de la Fn de regresión Multiple
+
+Lo checamos con la R^2 ajustada 
+
+```{r R^2, comment = "" }
+
+suma_m <- summary(modelo.8)
+suma_m$r.squared
+
+```
+
+tenemos una R^2 ajustada que nos dice que sí es una regresión lineal.
+
+### Comprobamos heterocedasticidad 
+
+Esto es para poder ver si la varianza de los errores es constante. 
+
+```{r Heterocedasticidad}
+
+prueba_heter_m <- as.data.frame(cbind(modelo.8$fitted.values, modelo.8$residuals))
+
+colnames(prueba_heter_m) <- c("Y_estimada", "Residuales")
+
+grafico_heter_m <- prueba_heter_m %>% 
+  ggplot() + 
+  geom_point(aes(Y_estimada, Residuales)) + 
+  theme_classic()
+
+grafico_heter_m
+
+```
+
+Se puede observar que no hay un patrón en sí en los errores, lo cual nos dice que sí hay heterocedasticidad 
+
+### Independencia en los errores 
+
+No es una serie de tiempo - no aplica ya que los datos no llevan un orden y pueden cambiar de pocisión 
+
+\pagebreak
+\newpage
+
+### Presencia de errores atípicos 
+
+```{r Errores Atípicos}
+
+anova_m <- anova(modelo.8)
+sqrt_mse_m <- sqrt(anova_m[6,3])
+
+df_ea_m <- as.data.frame(cbind(train.base_m$carwidth, train.base_m$enginesize, train.base_m$stroke,
+                                 train.base_m$compressionratio, train.base_m$peakrpm, modelo.8$residuals/sqrt_mse_m))
+
+colnames(df_ea_m) <- c("X1", "X2", "X3", "X4", "X5", "Errores")
+
+grafico_ea_m <- df_ea_m %>% 
+  ggplot() + 
+  geom_hline(yintercept = -4, colour = "red") + 
+  geom_hline(yintercept = 4, colour = "red")  +
+  geom_point(aes(x = X1, y = Errores, color = "Carwidth")) + 
+  geom_point(aes(x = X2, y = Errores, color = "Enginesize")) +
+  geom_point(aes(x = X3, y = Errores, color = "Stroke")) +
+  geom_point(aes(x = X4, y = Errores, color = "Compressionratio")) +
+  geom_point(aes(x = log(X5), y = Errores, color = "Peakrpm")) + # le hice una transformación lineal a los datos para poder comparar mejor
+  ggtitle("x vs ui / raiz(mse)") +
+  ylab("ui / raiz(mse)") +
+  labs(title = "Datos atípicos") + 
+  scale_color_manual(values = c("Carwidth" = "blue", "Enginesize" = "green", "Stroke" = "black", 
+                                "Compressionratio" = "red", "Peakrpm" = "purple")) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+grafico_ea_m
+
+
+```
+
+
+Se puede observar que hay errores atípicos, los cuales podemos eliminar debido a que este análisis no es una serie de tiempo, en nuestro DF es el renglón 28, por lo que lo eliminamos
+
+Graficamos para confirmar que no hay datos atípicos ahora 
+
+```{r Sin Errores Atípicos}
+
+
+df_sin_ea_m <- df_ea_m %>% 
+  slice(-28)
+
+grafico_sin_ea_m <- df_sin_ea_m %>% 
+  ggplot() + 
+  geom_hline(yintercept = -4, colour = "red") + 
+  geom_hline(yintercept = 4, colour = "red")  +
+  geom_point(aes(x = X1, y = Errores, color = "Carwidth")) + 
+  geom_point(aes(x = X2, y = Errores, color = "Enginesize")) +
+  geom_point(aes(x = X3, y = Errores, color = "Stroke")) +
+  geom_point(aes(x = X4, y = Errores, color = "Compressionratio")) +
+  geom_point(aes(x = log(X5), y = Errores, color = "Peakrpm")) + 
+  ggtitle("x vs ui / raiz(mse)") +
+  ylab("ui / raiz(mse)") +
+  labs(title = "Sin datos atípicos") + 
+  scale_color_manual(values = c("Carwidth" = "blue", "Enginesize" = "green", "Stroke" = "black", 
+                                "Compressionratio" = "red", "Peakrpm" = "purple")) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+grafico_sin_ea_m
+
+```
+
+\pagebreak
+\newpage
+
+### Verificar la normalidad en los errores 
+
+La QQ plot - esa se hace con los residuales sacamos los residuales de nuestro modelo
+
+```{r QQ plot M}
+
+ui_m <- as.data.frame(modelo.8$residuals)
+colnames(ui_m) <- c("Ui")
+
+ui_m %>% 
+  ggplot(aes(sample = Ui)) + 
+  stat_qq() +
+  stat_qq_line() + 
+  ggtitle("QQ Plot Residuales") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+
+```
+
+
+Rechazamos el supuesto de normalidad de los errores debido a las dos colas que muestra el gráfico de QQ plot. No obstante, ya que el modelo de regresión lineal Multiple ajustado es robusto ante el supuesto de normalidad podemos continuar usando estas variable.
+
+# Comparativo entre modelos y selección de un modelo
+
+
+
+```{r R^2 MRLS, comment= "El modelo de regresión lineal simple tiene una R^2 ajustada de "}
+
+suma_s <- summary(modelo_1)
+suma_s$adj.r.squared
+
+```
+
+
+```{r R^2 MRLM, comment = "Y el MRLM tiene una R ajustada de "}
+
+suma_m <- summary(modelo.8)
+suma_m$r.squared
+
+
+dif_R <- suma_m$adj.r.squared - suma_s$adj.r.squared
+
+```
+
+Ya que estamos utilizando las R^2 ajustadas, las cuales si nos dejan comparar modelos, y vemos que R^2 del MRLM es mayor que la del MRLS por:
+
+```{r, comment = ""}
+
+dif_R
+
+```
+
+Lo cual nos lleva a elegir el MRLM que es el mejor ajustado para nuestro precio.
+
+# Conclusiones 
+
+
