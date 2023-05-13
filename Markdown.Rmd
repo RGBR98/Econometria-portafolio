@@ -50,18 +50,18 @@ set.seed(3234)
 
 # Introducción 
 
-## Problema de interés: Análisis del precio de los vehículos [Raúl]
+## Problema de interés: Análisis del precio de los vehículos 
 
-### Breve explicación de la base de datos "Scrap price" [Raúl]
+### Breve explicación de la base de datos "Scrap price" 
 
-## ¿Por qué usar una regresión lineal? [Raúl]
+## ¿Por qué usar una regresión lineal? 
 
 
 
 \pagebreak
 \newpage
 
-# Marco teórico [AOKI]
+# Marco teórico 
 
 ## Conceptos básicos
 
