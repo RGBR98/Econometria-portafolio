@@ -82,7 +82,7 @@ diente con justificación
 
 ## Selección de la variable explicativa 
 
-Para la selección de la variable explicativa eliminamos las variables de caracter, y dejamos las variables numéricas. Dividimos las variables en 3 grupos para poder analizar la correlación de las variables respecto el precio:
+Para la selección de la variable explicativa eliminamos las variables de carácter, y dejamos las variables numéricas. Dividimos las variables en 3 grupos para poder analizar las correlaciones de las variables respecto el precio, este fue el resultado de cada set:
 
 
 
@@ -117,7 +117,7 @@ print(third_set)
 
 Cómo se puede observar las variables con las correlaciones más altas son: 
 
-Horsepower, curbweight, enginesize con 0.808, 0.835 y 0.874 respectivamente. No obstante, la variable que más sentido hace para elegir para explicar el motor es "enginesize", ya que además de tener la correlación más alta respecto al precio, podemos eliminar "horse power" porque tiene una multicolienalidad imperfecta de 0.810 con la variable que elegimos.
+Horsepower, curbweight y enginesize con 0.808, 0.835 y 0.874 respectivamente. Aunque las tres tienen correlaciones muy altes, teóricamente hace más sentido escoger es "enginesize", ya que tenemos la evidencia que el tamaño del motor influye en el precio de un auto, además de ser la variable con la correlación más alta respecto al precio. En este sentido, podemos eliminar "horse power" porque tiene una multicolienalidad imperfecta de 0.810 con la variable que elegimos.
 
 ```{r Horsepower^Enginesize}
 
@@ -135,11 +135,13 @@ print(hp_eng.size)
 
 ## Parámetros del modelo 
 
-En un modelo de regresión, los parámetros son los valores que se ajustan al conjunto de datos para crear la mejor línea o curva que represente la relación entre la variable independiente y la variable dependiente.
+En un modelo de regresión, los parámetros son los valores que se ajustan al conjunto de datos para crear la mejor línea o curva que sea la mejor representación posible de la relación entre la variable independiente y la variable dependiente.
 
-En una regresión lineal simple, los parámetros son la pendiente y la intersección en el eje. La pendiente representa el cambio en la variable dependiente por cada cambio unitario en la variable independiente, mientras que la intersección en el eje y representa el valor de la variable dependiente cuando la variable independiente es igual a cero.
+En una regresión lineal simple, los parámetros son la pendiente (yo pondría a qué beta se refieren) y la intersección en el eje. La pendiente representa el cambio en la variable dependiente por cada cambio unitario en la variable independiente, mientras que la intersección en el eje y representa el valor de la variable dependiente cuando la variable independiente es igual a cero.
 
-El objetivo de un modelo de regresión es encontrar los valores óptimos de los parámetros que minimicen la diferencia entre las predicciones del modelo y los valores reales de la variable dependiente en el conjunto de datos.
+El objetivo de un modelo de regresión lineal es encontrar los valores óptimos de los parámetros que minimicen la diferencia entre las predicciones del modelo y los valores reales de la variable dependiente en el conjunto de datos.
+
+A continuación, presentamos los siguientes valores obtenidos, para describir lo explicado anteriormente:
 
 
 
@@ -157,12 +159,12 @@ modelo_1 <- lm(price~enginesize, data = train.base)
 summary(modelo_1)
 
 ```
-Los valores de los parámetros son B0= -8156.662 y B1= 167.62 con unos errores estándar de 1022.821 y 7.497 respectivamente.
+Los valores de los parámetros son B0= -8156.662 y B1= 167.62, con unos errores estándar de 1022.821 y 7.497 respectivamente.
 
 Podemos observar que para B0 y B1 el P value < |t value | por lo tanto B0 y B1 son significativas con un nivel de confianza de 1
 
 
-Tabla ANOVA 
+A continuación, la Tabla ANOVA: 
 
 ```{r ANOVA, comment = ""}
 
@@ -177,13 +179,13 @@ anova(modelo_1)
 ### Comprobación de la linealidad de la Fn de regresión
 
 Comprobamos con la R^2, en este caso los errores se acercan un 77% a nuestra recta de regresión
-lo que nos dice que sí hay linealidad en ella, lo comprobamos sacando la R^2
+lo que nos dice que sí hay linealidad en ella. 
 
-nos da el .7787968 de R^2. Esto quiere decir que la variable X explica en un 77.88% a la variable dependiente Y.
+Al calcular la R^2, como anteriormente se mencionó, obtenemos que es .7787968 ; esto quiere decir que la variable X explica en un 77.88% a la variable dependiente Y.
 
 ### Heterocedasticidad 
 
-Comprobamos heterocedisticidad (la varianza de los errores es constante), lo comprobamos con un gráfico comparando los residuales con las Y observadas (ŷ), para esto tenemos que hacer un DF con ambos vectores obtenidos de nuestro modelo
+Comprobamos heterocedisticidad (que la varianza de los errores sea constante), lo comprobamos con un gráfico, donde comparamos los residuales con las Y observadas (ŷ), para esto tenemos que hacer un DF con ambos vectores obtenidos de nuestro modelo
 
 ```{r heterocedasticidad}
 prueba_heter <- as.data.frame(cbind(modelo_1$fitted.values, modelo_1$residuals))
@@ -204,19 +206,18 @@ grafico_heter
 
 ```
 
-Se puede observar que no hay un patrón en sí en el gráfico, como una recta, con esto podemos asumir que hay heterocedisticidad.
+Dado el anterior gráfico, podemos observar que no existe un patrón notório en el gráfico, ya sea como la silueta de una recta, con esto podemos asumir que hay heterocedisticidad, por lo tant la varianza de nuestros errores es constante.
 
 ### Independencia en los errores 
-
-No es una serie de tiempo - no aplica ya que los datos no llevan un orden y pueden cambiar de pocisión 
+Los datos usados en este módelo no corresponden a una serie de tiempo, por lo tanto no aplica, ya que los datos no llevan un orden y pueden cambiar de posición 
 \pagebreak
 \newpage
 
 ### Presencia de errores atípicos 
 
-Esto se hace calculando la raíz de el cuadrado medio de la suma de cuadrados de los errores (MSE), el cual se obtiene de la tabala ANOVA de nuestros residuales el mean.
+Esto resultado lo obtenemos de la siguiente forma: Obtenemos la suma de cuadrados de los errores (MSE), de la tabla ANNOVA, después calculamos la raiz cuadrada del MSE.
 
-Ya con MSE^(1/2), podemos sacar la división de los residuales entre la raíz de MSE y compararlos con xi esas variables las metemos en un DF y graficamos las diferencias.
+Ya con (MSE)^(1/2), podemos obtener la división de los residuales entre la raíz de MSE y compararlos con nuewstras x'i, estas variables las metemos en un DF y graficamos las diferencias.
 
 ```{r Independencia de errores}
 
@@ -254,7 +255,7 @@ grafico_ea
 
 ### Verificar la normalidad en los errores 
 
-La QQ plot - esa se hace con los residuales sacamos los residuales de nuestro modelo
+Usaremos la función QQ plot para verificar esto; esta función se realiza con los residuales obtenidos en nuestro modelo. 
 
 ```{r QQ Plot}
 
@@ -330,9 +331,9 @@ grafico_confianza_prediccion
 
 ## Selección de los regresores 
 
-Utilizamos las variables numéricas nuevamente para poder tener un mejor control sobre las variables y utilizamos el método "Backward", este método es computacional pero debido a que hay una cantidad manejable de variables lo hicimos a mano, tomando en cuanta un nivel de significancia de .005 
+Utilizamos las variables numéricas nuevamente para poder tener un mejor control sobre las regresoras y utilizamos el método "Backward", este método es computacional, pero debido a que hay una cantidad manejable de variables lo hicimos a mano, tomando en cuanta un nivel de significancia de .005 
 
-Iniciamos con el modelo tomando en cuenta todas las variables del modelo
+Iniciamos con el modelo tomando en cuenta todas las variables del modelo.
 
 ```{r MRLM Selección, comment = ""}
 
@@ -359,9 +360,9 @@ summary(modelo_todo)
 
 \pagebreak
 
-Ya con esos datos podemos observar que los Pvalues son mayores a 0.005 en algunos regresores, por lo que vamos a ir quitando variables que no cumplen con la prueba Global de la regresión y corriendo la regresión nuevamente por cada modelo.
+Con los datos que obtuvimos anteriormente, podemos observar que algunos de los P-values de las regresoras son mayores a 0.005, por lo que iremos depurando las variables que no cumplen con la prueba Global de la regresión, e iremos corriendo la regresión nuevamente por cada modelo.
 
-También utilizamos el Variance Inflation Factor (VIF) el cual nos da las correlaciones entre los regresores, y estamos buscando un VIF menor a 10 en todas las variables de nuestro modelo 
+También utilizamos el Variance Inflation Factor (VIF) el cual nos muestra las correlaciones que existen entre los regresores, para esta prueba estamos buscando que el VIF menor a 10 en todas las variables de nuestro modelo. 
 
 
 
@@ -377,7 +378,7 @@ summary(modelo.8)
 
 ```
 
-Como se puede observar, las variables ya tienen un VIF menos a 10 
+Observando los resultados obtenidos y los requisitos expuestos, estas son las regresoras que cuentan con un VIF menor a 10:
 
 ```{r VIF, comment = "" }
 
@@ -392,7 +393,7 @@ print(as.data.frame(vif(modelo.8)))
 
 ### Comprobación de la linealidad de la Fn de regresión Multiple
 
-Lo checamos con la R^2 ajustada 
+Ahora comprobamos nuestros resultados usando la R^2 ajustada, una vez que la calculamos, obtenemos lo siguiente: 
 
 ```{r R^2, comment = "" }
 
@@ -405,7 +406,7 @@ tenemos una R^2 ajustada que nos dice que sí es una regresión lineal.
 
 ### Comprobamos heterocedasticidad 
 
-Esto es para poder ver si la varianza de los errores es constante. 
+Nuevamente, en el modelo de regresión lineal multiple, debemos comporbar que la varianza de los errores sea constante, comprobamos que se cumple la heterocedasticidad. 
 
 ```{r Heterocedasticidad}
 
@@ -422,11 +423,11 @@ grafico_heter_m
 
 ```
 
-Se puede observar que no hay un patrón en sí en los errores, lo cual nos dice que sí hay heterocedasticidad 
+Como podemos observar en el gráfico anterior, no se nota que exista un patrón evidente en los errores, lo cual verifica que sí hay heterocedasticidad. 
 
 ### Independencia en los errores 
 
-No es una serie de tiempo - no aplica ya que los datos no llevan un orden y pueden cambiar de pocisión 
+Los datos usados en este módelo no corresponden a una serie de tiempo, por lo tanto no aplica, ya que los datos no llevan un orden y pueden cambiar de posición.  
 
 \pagebreak
 \newpage
@@ -466,9 +467,9 @@ grafico_ea_m
 ```
 
 
-Se puede observar que hay errores atípicos, los cuales podemos eliminar debido a que este análisis no es una serie de tiempo, en nuestro DF es el renglón 28, por lo que lo eliminamos
+Observando este gráfico, podemos notar que hay errores atípicos, los cuales podemos eliminar debido a que este análisis no es una serie de tiempo, en nuestro DF es el renglón 28, por lo que lo eliminamos
 
-Graficamos para confirmar que no hay datos atípicos ahora 
+Una vez que eliminamos estos datos, volvemos a realizar el este gráfico para confirmar que no existan datos atípicos.
 
 ```{r Sin Errores Atípicos}
 
@@ -502,7 +503,7 @@ grafico_sin_ea_m
 
 ### Verificar la normalidad en los errores 
 
-La QQ plot - esa se hace con los residuales sacamos los residuales de nuestro modelo
+Para verificar este punto, usamos la función QQ plot; esta se realiza con los residuales de nuestro modelo.
 
 ```{r QQ plot M}
 
@@ -556,6 +557,13 @@ dif_R
 Lo cual nos lleva a elegir el MRLM que es el mejor ajustado para nuestro precio.
 
 # Conclusiones 
+
+A partir de la evidencia recolectada en los analisís que se realizaron en este trabajo, podemos concluir con seguridad que el Modelo de Regresión Lineal Multiple es mejor para esta (base de datos?) y explica de mejor manera el compartamiento del precio en los coches. 
+
+Esta conclusión se puede explicar desde dos maneras; la primera, de una forma matemática, en este sentido sabemos que la R^2 (ajustada) será mejor en un modelo multiple a comparación de un modelo simple. Esta razonamiento lo obtenemos a partir de la formula de la R^2 (ajustada), como sabemos a mayor número de regresoras, el valor de la R^2 (ajustada) será mayor al del modelo lineal; en segundo lugar, de forma teórica, sabemos que en muy pocos bienes, si no es que en ninguno, el precio depende únicamente de un solo factor. Por lo que, es de esperarse que un modelo acierte en mayor medida al precio de un coche si se consideran más factores. En el caso especifico de los coches, el precio se ve afectado por muchos factores. Dentro del mercado, existen muchos modelos que son iguales en casí todos los factores, con excepción de un par y la diferencia en precios se explica por esas mínimas diferencias. De igual forma, es una industra que no se diferencia por un solo factor, cada marca, cada modelo, tiene sus caracteristicas particulares y diferencias entre sus diferentes factores. 
+
+Dado los puntos anteriores, se nota una clara mejora entre usar el modelo de regresión lineal multiple, al usar el modelo de regresion lineal simple.
+
 
 # Bibliografía
 
