@@ -50,6 +50,12 @@ set.seed(3234)
 
 # Introducción 
 
+La globalización causó una revolución en el mercado automotriz. La apertura al comercio y la inversión internacional creó mercados más competitivos. Los consumidores ya no tenían que resignarse a consumir únicamente manufacturas nacionales, sino que podían acceder a una amplia gama de proveedores para un mismo tipo de producto o servicio. Un caso emblemático es el sector automotriz que, a pesar de ser una industria altamente protegida, no pudo evitar la penetración de competidores extranjeros. Hoy en día los diferentes fabricantes de automóviles compiten para colocar su producto y extraer mejores márgenes. Bajo este entorno altamente competitivo es necesario que los tomadores de decisiones hagan uso de herramientas precisas que ayuden a encontrar áreas de oportunidad y ventajas comparativas. Las herramientas econométricas se presentan como una manera de asistir a los tomadores de decisiones para hacer predicciones precisas y afrontar los desafíos de la industria.
+
+Los modelos econométricos que predominan en la literatura se centran principalmente en evaluar factores externos al diseño automotriz como determinantes del precio. No obstante, estos estudios resultan anacrónicos ante el entorno competitivo actual. La entrada de más competidores y por ende la reducción de la cuota de mercado hace que controlar los factores externos a la producción sea cada vez más complejo, inasequible y costoso. Al mismo tiempo, tal competitividad crea fuertes incentivos por reducir los costos de producción de manera que el precio final al consumidor sea el menor posible, sin sacrificar márgenes atractivos.
+
+La innovación y el desarrollo tecnológico ayudan con esta tarea, pero se debe ser eficiente en el uso de recursos. En este trabajo se propone el uso de un modelo de regresión linear simple (MRLS) en contraposcición con un módelo de regresión lineal multiple (MRLM), para identificar el componente automotriz que tenga un mayor efecto sobre en el precio. De esta forma, la alta gerencia tendrá acceso a herramientas con base en la evidencia empírica que ayude a determinar la asignación eficiente de recursos para la investigación y desarrollo (I+D). Proponemos que un uso eficiente de I+D ayudará a abaratar costos y reducir el precio de venta, sin sacrificar la competitividad en el mercado.
+
 ## Problema de interés: Análisis del precio de los vehículos 
 
 ### Breve explicación de la base de datos "Scrap price" 
@@ -65,9 +71,21 @@ set.seed(3234)
 
 ## Conceptos básicos
 
+El MRLS es una técnica para modelar la relación lineal entre dos variables. De manera general, el MRLS se define en la siguiente ecuación: 
+y=BO + B1X1 + U
+ Donde y es la variable dependiente y x la variable independiente, mientras que la variable u, denominada como la perturbación estocástica, son variables aleatorias no observables que representa a todos los factores distintos de x que afectan a y. En tanto BO y B1, representan respectivamente el coeficiente del intercepto y el coeficiente de la pendiente. El coeficiente de la pendiente es el interés principal del análisis econométrico, pues mide el efecto de la variable independiente sobre la variable independiente mantenido todos los demás factores constantes. En este caso en particular, omitiremos el análisis del coeficiente del intercepto.
+ 
+En el caso en particular que se explora en este reporte, la variable independiente y será el precio del automóvil, y la dependiente x será determinada durante el proceso de selección de variable.
+
 ## Supuestos del modelo 
 
+El MRLS depende de seis supuestos elementales, que deberemos verificar para determinar La validez del modelo; En primer lugar, asumimos que la relación entre Xi y Yi es lineal en parámetros; en segundo lugar, se asume que no existe una dependencia lineal entre los errores y la variable dependiente o, dicho de otra manera, Cov(Ui, Xi) = 0; en tercer lugar, se supone que el valor promedio de u en la población es igual a cero, por lo que E(U) = 0, debido a esto, dejamos BO en el modelo; en cuarto lugar, se da por supuesto la homocedasticidad, por lo que Var[Ui] = (SIGMA)^2 ;en quinto lugar, el número de las observaciones debe ser mayor que el de los parámetros; y por último, los valores de xi no debieron ser todos iguales ni existen observaciones atípicas.
+
 ## Método de selección de variables y limitaciones del modelo
+
+Dado que la base de datos en la que se basó este reporte tiene observaciones y variable relativamente limitadas (se analizaron 205 modelos de automovil y se capturaron 23 variables diferentes) se utilizó un método de selección de variables basado en un análisis gráfico de los datos. 
+
+El MRLS es una herramienta que ayuda a orientar a los tomadores de decisiones, más no es capaz de detallar relaciones complejas. Principalmente, se encuentra limitado por explicar la relación que existe entre una sola característica del auto y el precio, cuando los determinantes de este último son multivariados. Al no poder incorporar más información el modelo propuesto podría caer en la redundancia al crear otro tipo de ineficiencias derivadas del análisis de una relación simple. Esto dado que el modelo podría informar decisiones de inversión de recursos sin considerar relaciones más complejas. 
 
 
 \pagebreak
@@ -77,13 +95,13 @@ set.seed(3234)
 
 ## Análisis de la base de datos
 
-Aquí va filtros aplicados, estadígrafos, gráficas, limpieza y selección de variable depen-
-diente con justificación
+Para constituir la base de datos se registraron 23 variables para 205 modelos de automóvil, así como sus precios, correspondientes a 22 fabricantes de autos. Todas las variables corresponden a características del auto, como el número de puertas, las medidas del modelo, etc.  
+
+Como primer filtro, se descartaron las variables no numéricas. Después, se dividía a las 13 variables restantes en tres lotes para los que se generó una matriz gráfica de la correlación de cada variable con el precio del modelo automovilístico y resto de las variables del lote. De ahí se prosiguió a un análisis gráfico en el que se determinó las variables con la mayor correlación lineal al precio de la unidad. 
 
 ## Selección de la variable explicativa 
 
-Para la selección de la variable explicativa eliminamos las variables de carácter, y dejamos las variables numéricas. Dividimos las variables en 3 grupos para poder analizar las correlaciones de las variables respecto el precio, este fue el resultado de cada set:
-
+Dado el análisis gráfico se determinó que dos variables demostraban tener la mayor relación lineal: caballos de fuerza y tamaño del motor. Dado que los caballos de fuerza representan la energía que produce el motor, que a su vez está en función del tamaño del motor, se determinó que la variable dependiente deberá ser el tamaño del motor. 
 
 
 ```{r Ggpairs}
@@ -117,7 +135,7 @@ print(third_set)
 
 Cómo se puede observar las variables con las correlaciones más altas son: 
 
-Horsepower, curbweight y enginesize con 0.808, 0.835 y 0.874 respectivamente. Aunque las tres tienen correlaciones muy altes, teóricamente hace más sentido escoger es "enginesize", ya que tenemos la evidencia que el tamaño del motor influye en el precio de un auto, además de ser la variable con la correlación más alta respecto al precio. En este sentido, podemos eliminar "horse power" porque tiene una multicolienalidad imperfecta de 0.810 con la variable que elegimos.
+Horsepower, curbweight y enginesize con 0.808, 0.835 y 0.874 respectivamente. Aunque las tres tienen correlaciones muy altas, teóricamente hace más sentido escoger es "enginesize", ya que tenemos la evidencia que el tamaño del motor influye en el precio de un auto, además de ser la variable con la correlación más alta respecto al precio. En este sentido, podemos eliminar "horse power" porque tiene una multicolienalidad imperfecta de 0.810 con la variable que elegimos.
 
 ```{r Horsepower^Enginesize}
 
@@ -137,7 +155,7 @@ print(hp_eng.size)
 
 En un modelo de regresión, los parámetros son los valores que se ajustan al conjunto de datos para crear la mejor línea o curva que sea la mejor representación posible de la relación entre la variable independiente y la variable dependiente.
 
-En una regresión lineal simple, los parámetros son la pendiente (yo pondría a qué beta se refieren) y la intersección en el eje. La pendiente representa el cambio en la variable dependiente por cada cambio unitario en la variable independiente, mientras que la intersección en el eje y representa el valor de la variable dependiente cuando la variable independiente es igual a cero.
+En una regresión lineal simple, los parámetros son la pendiente y la intersección en el eje. La pendiente representa el cambio en la variable dependiente por cada cambio unitario en la variable independiente, mientras que la intersección en el eje y representa el valor de la variable dependiente cuando la variable independiente es igual a cero.
 
 El objetivo de un modelo de regresión lineal es encontrar los valores óptimos de los parámetros que minimicen la diferencia entre las predicciones del modelo y los valores reales de la variable dependiente en el conjunto de datos.
 
@@ -206,7 +224,7 @@ grafico_heter
 
 ```
 
-Dado el anterior gráfico, podemos observar que no existe un patrón notório en el gráfico, ya sea como la silueta de una recta, con esto podemos asumir que hay heterocedisticidad, por lo tant la varianza de nuestros errores es constante.
+Dado el anterior gráfico, podemos observar que no existe un patrón notório en el gráfico, ya sea como la silueta de una recta, con esto podemos asumir que hay heterocedisticidad, por lo tanto la varianza de nuestros errores es constante.
 
 ### Independencia en los errores 
 Los datos usados en este módelo no corresponden a una serie de tiempo, por lo tanto no aplica, ya que los datos no llevan un orden y pueden cambiar de posición 
@@ -215,9 +233,9 @@ Los datos usados en este módelo no corresponden a una serie de tiempo, por lo t
 
 ### Presencia de errores atípicos 
 
-Esto resultado lo obtenemos de la siguiente forma: Obtenemos la suma de cuadrados de los errores (MSE), de la tabla ANNOVA, después calculamos la raiz cuadrada del MSE.
+Este resultado lo obtenemos de la siguiente forma: Obtenemos la suma de cuadrados de los errores (MSE), de la tabla ANOVA, después calculamos la raiz cuadrada del MSE.
 
-Ya con (MSE)^(1/2), podemos obtener la división de los residuales entre la raíz de MSE y compararlos con nuewstras x'i, estas variables las metemos en un DF y graficamos las diferencias.
+Ya con (MSE)^(1/2), podemos obtener la división de los residuales entre la raíz de MSE y compararlos con nuestras x'i, estas variables las metemos en un DF y graficamos las diferencias.
 
 ```{r Independencia de errores}
 
@@ -249,6 +267,8 @@ grafico_ea <- df_ea %>%
 grafico_ea
 
 ```
+
+Como podemos observar en el gráfico anterior no existe ningún dato atípico. 
 
 \pagebreak
 \newpage
@@ -284,7 +304,7 @@ Rechazamos el supuesto de normalidad de los errores debido a las dos colas que m
 
 Sacamos el intervalo de confianza de E[Y], esto lo hacemos para ver el intervalo en donde van a estar las siguientes E[Y / X], independientemente de la muestra.
 
-En R usamos la fn Predict.lm la alimentamos con el modelo_1 con nuestra data de entrenamiento aplicando el intervalo de confianza a el nivel requerido, en este caso .95 [Explicar porque (AOKI)]
+En R usamos la fn Predict.lm la alimentamos con el modelo_1 con nuestra data de entrenamiento aplicando el intervalo de confianza a el nivel requerido, en este caso .95 
 
 ```{r Confianza y predicción}
 
@@ -331,9 +351,9 @@ grafico_confianza_prediccion
 
 ## Selección de los regresores 
 
-Utilizamos las variables numéricas nuevamente para poder tener un mejor control sobre las regresoras y utilizamos el método "Backward", este método es computacional, pero debido a que hay una cantidad manejable de variables lo hicimos a mano, tomando en cuanta un nivel de significancia de .005 
+Utilizamos las variables numéricas nuevamente para poder tener un mejor control sobre las regresoras y utilizamos el método "Backward", este método es computacional, pero debido a que hay una cantidad manejable de variables lo hicimos a mano, tomando en cuenta un nivel de significancia de .05 
 
-Iniciamos con el modelo tomando en cuenta todas las variables del modelo.
+Iniciamos el modelo tomando en cuenta todas las variables numericas.
 
 ```{r MRLM Selección, comment = ""}
 
@@ -360,13 +380,13 @@ summary(modelo_todo)
 
 \pagebreak
 
-Con los datos que obtuvimos anteriormente, podemos observar que algunos de los P-values de las regresoras son mayores a 0.005, por lo que iremos depurando las variables que no cumplen con la prueba Global de la regresión, e iremos corriendo la regresión nuevamente por cada modelo.
+Con los datos que obtuvimos anteriormente, podemos observar que algunos de los P-values de las regresoras son mayores a 0.05, por lo que iremos depurando las variables que no cumplen con la prueba Global de la regresión, e iremos corriendo la regresión nuevamente por cada modelo.
 
 También utilizamos el Variance Inflation Factor (VIF) el cual nos muestra las correlaciones que existen entre los regresores, para esta prueba estamos buscando que el VIF menor a 10 en todas las variables de nuestro modelo. 
 
 
+En el reporte sólo vamos a poner el modelo sin las variables con Pvalue mayor a 0.05.
 
-En el reporte sólo vamos a poner el modelo sin las variables con Pvalue mayor a 0.005
 
 ```{r MRLM lm a usar, comment = "" }
 
@@ -469,34 +489,8 @@ grafico_ea_m
 
 Observando este gráfico, podemos notar que hay errores atípicos, los cuales podemos eliminar debido a que este análisis no es una serie de tiempo, en nuestro DF es el renglón 28, por lo que lo eliminamos
 
-Una vez que eliminamos estos datos, volvemos a realizar el este gráfico para confirmar que no existan datos atípicos.
+Una vez que eliminamos estos datos, podemos proseguir con las siguientes verificaciones.
 
-```{r Sin Errores Atípicos}
-
-
-df_sin_ea_m <- df_ea_m %>% 
-  slice(-28)
-
-grafico_sin_ea_m <- df_sin_ea_m %>% 
-  ggplot() + 
-  geom_hline(yintercept = -4, colour = "red") + 
-  geom_hline(yintercept = 4, colour = "red")  +
-  geom_point(aes(x = X1, y = Errores, color = "Carwidth")) + 
-  geom_point(aes(x = X2, y = Errores, color = "Enginesize")) +
-  geom_point(aes(x = X3, y = Errores, color = "Stroke")) +
-  geom_point(aes(x = X4, y = Errores, color = "Compressionratio")) +
-  geom_point(aes(x = log(X5), y = Errores, color = "Peakrpm")) + 
-  ggtitle("x vs ui / raiz(mse)") +
-  ylab("ui / raiz(mse)") +
-  labs(title = "Sin datos atípicos") + 
-  scale_color_manual(values = c("Carwidth" = "blue", "Enginesize" = "green", "Stroke" = "black", 
-                                "Compressionratio" = "red", "Peakrpm" = "purple")) +
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5))
-
-grafico_sin_ea_m
-
-```
 
 \pagebreak
 \newpage
@@ -558,12 +552,22 @@ Lo cual nos lleva a elegir el MRLM que es el mejor ajustado para nuestro precio.
 
 # Conclusiones 
 
-A partir de la evidencia recolectada en los analisís que se realizaron en este trabajo, podemos concluir con seguridad que el Modelo de Regresión Lineal Multiple es mejor para esta (base de datos?) y explica de mejor manera el compartamiento del precio en los coches. 
+A partir de la evidencia recolectada en los analisís que se realizaron en este trabajo, podemos concluir con seguridad que el Modelo de Regresión Lineal Multiple es mejor para este problema y explica de mejor manera el compartamiento del precio en los coches. 
 
-Esta conclusión se puede explicar desde dos maneras; la primera, de una forma matemática, en este sentido sabemos que la R^2 (ajustada) será mejor en un modelo multiple a comparación de un modelo simple. Esta razonamiento lo obtenemos a partir de la formula de la R^2 (ajustada), como sabemos a mayor número de regresoras, el valor de la R^2 (ajustada) será mayor al del modelo lineal; en segundo lugar, de forma teórica, sabemos que en muy pocos bienes, si no es que en ninguno, el precio depende únicamente de un solo factor. Por lo que, es de esperarse que un modelo acierte en mayor medida al precio de un coche si se consideran más factores. En el caso especifico de los coches, el precio se ve afectado por muchos factores. Dentro del mercado, existen muchos modelos que son iguales en casí todos los factores, con excepción de un par y la diferencia en precios se explica por esas mínimas diferencias. De igual forma, es una industra que no se diferencia por un solo factor, cada marca, cada modelo, tiene sus caracteristicas particulares y diferencias entre sus diferentes factores. 
+Esta conclusión se puede explicar desde dos maneras; la primera, de una forma matemática, en este sentido sabemos que la R^2 (ajustada) será mejor en un modelo multiple a comparación de un modelo simple. Este razonamiento lo obtenemos a partir de la formula de la R^2 (ajustada), como sabemos a mayor número de regresoras, el valor de la R^2 (ajustada) será mayor al del modelo lineal; en segundo lugar, de forma teórica, sabemos que en muy pocos bienes, si no es que en ninguno, el precio depende únicamente de un solo factor. Por lo que, es de esperarse que un modelo acierte en mayor medida al precio de un coche si se consideran más factores. En el caso especifico de los coches, el precio se ve afectado por muchos factores. Dentro del mercado, existen muchos modelos que son iguales en casí todos los factores, con excepción de un par y la diferencia en precios se explica por esas mínimas diferencias. De igual forma, es una industra que no se diferencia por un solo factor, cada marca, cada modelo, tiene sus caracteristicas particulares y diferencias entre sus diferentes factores. 
 
 Dado los puntos anteriores, se nota una clara mejora entre usar el modelo de regresión lineal multiple, al usar el modelo de regresion lineal simple.
 
 
 # Bibliografía
+
+>Gatto, L. (2017, 10 noviembre). Data analysis and R programming. https://lgatto.github.io/2017_11_09_Rcourse_Jena/manipulating-and-analyzing-data.html
+
+>Hernández, F. (2020, 30 octubre). 12 Pruebas de independencia de los errores | Modelos de Regresión con R. https://fhernanb.github.io/libro_regresion/indep.html
+
+>Chatterjee, S., & Price, B. (1980). Regression Analysis by Example. Journal of the American Statistical Association, 75(372), 1039. 
+
+>Dalgaard, P. (2008). Introductory Statistics with R. En Springer eBooks. 
+
+
 
