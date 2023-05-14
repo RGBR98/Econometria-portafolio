@@ -562,7 +562,7 @@ A partir de la evidencia recolectada en los analisís que se realizaron en este 
 
 Esta conclusión se puede explicar desde dos maneras; la primera, de una forma matemática, en este sentido sabemos que la R^2 (ajustada) será mejor en un modelo multiple a comparación de un modelo simple. Esta razonamiento lo obtenemos a partir de la formula de la R^2 (ajustada), como sabemos a mayor número de regresoras, el valor de la R^2 (ajustada) será mayor al del modelo lineal; en segundo lugar, de forma teórica, sabemos que en muy pocos bienes, si no es que en ninguno, el precio depende únicamente de un solo factor. Por lo que, es de esperarse que un modelo acierte en mayor medida al precio de un coche si se consideran más factores. En el caso especifico de los coches, el precio se ve afectado por muchos factores. Dentro del mercado, existen muchos modelos que son iguales en casí todos los factores, con excepción de un par y la diferencia en precios se explica por esas mínimas diferencias. De igual forma, es una industra que no se diferencia por un solo factor, cada marca, cada modelo, tiene sus caracteristicas particulares y diferencias entre sus diferentes factores. 
 
-Dado los puntos anteriores, se nota una clara mejora entre usar el modelo de regresión lineal multiple, al usar el modelo de regresion lineal simple. 
+Dado los puntos anteriores, se nota una clara mejora entre usar el modelo de regresión lineal multiple, al usar el modelo de regresion lineal simple.
 
 
 # Bibliografía
