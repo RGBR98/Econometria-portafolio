@@ -1,6 +1,6 @@
 ---
 title: "Regresión Lineal Simple"
-author: "Equipo X"
+author: "Equipo R.E.J.O"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 header-includes: 
   - \usepackage{fancyhdr}
@@ -17,7 +17,7 @@ mainfont: Bookman Old Style
 \newpage
 \pagenumbering{arabic} 
 \fancyhead[L]{\thepage}
-\fancyfoot[C]{Equipo X}
+\fancyfoot[C]{Equipo R.E.J.O}
 \pagestyle{fancy}
 \addtolength{\headheight}{1.0cm}
 \pagestyle{fancyplain}
@@ -54,14 +54,9 @@ La globalización causó una revolución en el mercado automotriz. La apertura a
 
 Los modelos econométricos que predominan en la literatura se centran principalmente en evaluar factores externos al diseño automotriz como determinantes del precio. No obstante, estos estudios resultan anacrónicos ante el entorno competitivo actual. La entrada de más competidores y por ende la reducción de la cuota de mercado hace que controlar los factores externos a la producción sea cada vez más complejo, inasequible y costoso. Al mismo tiempo, tal competitividad crea fuertes incentivos por reducir los costos de producción de manera que el precio final al consumidor sea el menor posible, sin sacrificar márgenes atractivos.
 
-La innovación y el desarrollo tecnológico ayudan con esta tarea, pero se debe ser eficiente en el uso de recursos. En este trabajo se propone el uso de un modelo de regresión linear simple (MRLS) en contraposcición con un módelo de regresión lineal multiple (MRLM), para identificar el componente automotriz que tenga un mayor efecto sobre en el precio. De esta forma, la alta gerencia tendrá acceso a herramientas con base en la evidencia empírica que ayude a determinar la asignación eficiente de recursos para la investigación y desarrollo (I+D). Proponemos que un uso eficiente de I+D ayudará a abaratar costos y reducir el precio de venta, sin sacrificar la competitividad en el mercado.
+La innovación y el desarrollo tecnológico ayudan con esta tarea, pero se debe ser eficiente en el uso de recursos. En este trabajo se propone el uso de un modelo de regresión linear simple (MRLS) en contraposcición con un módelo de regresión lineal multiple (MRLM), para identificar el componente automotriz que tenga un mayor efecto sobre en el precio. 
 
-## Problema de interés: Análisis del precio de los vehículos 
-
-### Breve explicación de la base de datos "Scrap price" 
-
-## ¿Por qué usar una regresión lineal? 
-
+De esta forma, la alta gerencia tendrá acceso a herramientas con base en la evidencia empírica que ayude a determinar la asignación eficiente de recursos para la investigación y desarrollo (I+D). Proponemos que un uso eficiente de I+D ayudará a abaratar costos y reducir el precio de venta, sin sacrificar la competitividad en el mercado.
 
 
 \pagebreak
